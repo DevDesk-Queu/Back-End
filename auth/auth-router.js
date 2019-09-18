@@ -41,6 +41,7 @@ router.post('/login', (req, res) => {
             }
         })
         .catch(err => {
+            console.log('login err', err)
             res.status(500).json(err)
         })
 })
@@ -49,7 +50,7 @@ function makeAToken(user) {
     const payload = {
         sub: user.id,
         username: user.username,
-        role: user.role
+        // role: user.role
     }
     const options = {
         expiresIn: '1d'
