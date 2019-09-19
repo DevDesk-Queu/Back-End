@@ -10,7 +10,7 @@ module.exports = {
 }
 
 function findTickets() {
-    return db('tickets').select( 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at')
+    return db('tickets').select('id', 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at')
 }
 
 function findTickectsById(id) {
@@ -30,8 +30,10 @@ async function addTicket(ticket) {
     return findTickectsById(id)
 }
 
-function removeTicket() {
-    return null
+function removeTicket(id) {
+    return db('tickets')
+        .where({ id })
+        .del()
 }
 
 function updateTicket() {

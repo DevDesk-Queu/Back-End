@@ -42,6 +42,21 @@ router.post('/', requireUserId, (req, res) => {
         })
 })
 
+router.delete('/:id', checkId, (req, res) => {
+    Tickets.removeTicket(req.params.id)
+        .then(count => {
+            if(count > 0) {
+                res.status(200).json({
+                    message: 'Christmas was succesfully cancelled on the ticket'
+                })
+            } else {
+                res.status(500).json({
+                    message: 'the ticket will still have Christmas'
+                })
+            }
+        })
+})
+
 function requireUserId(req, res, next) {
     if (!req.body.user_id) {
         res.status(500).json({

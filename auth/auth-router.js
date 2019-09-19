@@ -53,6 +53,20 @@ router.post('/login', (req, res) => {
         })
 })
 
+router.get('/logout', (req, res) => {
+    if (req.session) {
+        req.session.destroy(err => {
+            if(err) {
+                res.json({
+                    message: 'sorry you are trapped here forever'
+                })
+            } else {
+                res.end()
+            }
+        })
+    }
+})
+
 function makeAToken(user) {
     const payload = {
         sub: user.id,
