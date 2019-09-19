@@ -6,7 +6,8 @@ module.exports = {
     findById,
     add,
     remove,
-    update
+    update,
+    findTicketsByUser
 }
 
 function find() {
@@ -18,7 +19,7 @@ function findBy(info) {
 }
 
 function findById(id) {
-    return db('users')
+    return db('users').select( 'id', 'fullName', 'email', 'role')
         .where({ id })
         .first()
 }
@@ -29,11 +30,21 @@ async function add(user) {
     return findById(id)
 }
 
-function remove() {
-    return null
+function remove(id) {
+    return db('users')
+        .where({ id })
+        .del()
 }
 
-function update() {
-    return null
+function update(id, changes) {
+    return db('users')
+        .where({ id })
+        .update(changes)
 }
 
+function findTicketsByUser(userId) {
+    return db('tickets as t')
+        .join('users as u', 't.user_id', 'u.id')
+        .select('t.id', 't.description', 't.title', 't.category', 'u.id as userId')
+        .where({ user_id: userId })
+}

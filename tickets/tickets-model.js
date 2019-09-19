@@ -12,12 +12,16 @@ function findTickets() {
     return db('tickets').select( 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at')
 }
 
-function findTickectsById() {
-    return null
+function findTickectsById(id) {
+    return db('tickets')
+        .where({ id })
+        .first()
 }
 
-function addTicket() {
-    return null
+async function addTicket(ticket) {
+    const [id] = await db('tickets').insert(ticket)
+
+    return findTickectsById(id)
 }
 
 function removeTicket() {
