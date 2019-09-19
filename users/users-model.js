@@ -6,13 +6,11 @@ module.exports = {
     findById,
     add,
     remove,
-    update,
-    findTickets,
-    findComments,
+    update
 }
 
 function find() {
-    return db('users').select('id', 'email', 'fullName', 'role')
+    return db('users').select('id', 'fullName', 'email', 'role')
 }
 
 function findBy(info) {
@@ -23,14 +21,6 @@ function findById(id) {
     return db('users')
         .where({ id })
         .first()
-}
-
-function findTickets() {
-    return null
-}
-
-function findComments() {
-    return null
 }
 
 async function add(user) {
