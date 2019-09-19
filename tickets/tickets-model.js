@@ -3,6 +3,7 @@ const db = require('../data/dbConfig.js')
 module.exports = {
     findTickets,
     findTickectsById,
+    findCommentsByTicketId,
     addTicket,
     removeTicket,
     updateTicket
@@ -13,11 +14,16 @@ function findTickets() {
 }
 
 function findTickectsById(id) {
-    return db('tickets')
+    return db('tickets').select('id', 'description', 'user_id')
         .where({ id })
         .first()
 }
-
+function findCommentsByTicketId(ticketId) {
+    return db('comments as c')
+        .join('tickets as t', 'c.ticket_id', 't.id')
+        .select('t.id', 'c.comment', 'c.user_id')
+        .where({ ticket_id: ticketId})
+}
 async function addTicket(ticket) {
     const [id] = await db('tickets').insert(ticket)
 

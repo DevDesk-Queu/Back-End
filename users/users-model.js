@@ -7,7 +7,8 @@ module.exports = {
     add,
     remove,
     update,
-    findTicketsByUser
+    findTicketsByUser,
+    findCommentsByTicketId
 }
 
 function find() {
@@ -47,4 +48,11 @@ function findTicketsByUser(userId) {
         .join('users as u', 't.user_id', 'u.id')
         .select('t.id', 't.description', 't.title', 't.category', 'u.id as userId')
         .where({ user_id: userId })
+}
+
+function findCommentsByTicketId(ticketId) {
+    return db('comments as c')
+        .join('tickets as t', 'c.ticket_id', 't.id')
+        .select('c.comment', 'c.user_id',)
+        .where({ ticket_id: ticketId})
 }
