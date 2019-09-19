@@ -4,11 +4,15 @@ module.exports = {
     find,
     findBy,
     findById,
-    add
+    add,
+    remove,
+    update,
+    findTickets,
+    findComments,
 }
 
 function find() {
-    return db('users').where('id', 'username')
+    return db('users').select('id', 'email', 'fullName', 'role')
 }
 
 function findBy(info) {
@@ -21,8 +25,25 @@ function findById(id) {
         .first()
 }
 
+function findTickets() {
+    return null
+}
+
+function findComments() {
+    return null
+}
+
 async function add(user) {
     const [id] = await db('users').insert(user)
 
     return findById(id)
 }
+
+function remove() {
+    return null
+}
+
+function update() {
+    return null
+}
+

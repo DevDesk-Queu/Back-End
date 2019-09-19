@@ -24,14 +24,14 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    let { username, password } = req.body
-    Users.findBy({ username })
+    let { email, password } = req.body
+    Users.findBy({ email })
         .first()
         .then(user => {
             if(user && bcrypt.compareSync(password, user.password)) {
                 const token = makeAToken(user)
                 res.status(200).json({
-                    message: `Welcome ${user.username}`,
+                    message: `Welcome ${user.fullName}`,
                     token
                 })
             } else {
@@ -49,8 +49,9 @@ router.post('/login', (req, res) => {
 function makeAToken(user) {
     const payload = {
         sub: user.id,
-        username: user.username,
-        // role: user.role
+        email: user.email,
+        fullName: user.name,
+        role: user.role
     }
     const options = {
         expiresIn: '1d'
