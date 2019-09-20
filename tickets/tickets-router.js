@@ -3,7 +3,7 @@ const router = require('express').Router()
 const Tickets = require('./tickets-model.js')
 const Comments = require('../comments/comments-model.js')
 
-
+const restrction = require('../auth/restriction-mw.js')
 
 router.get('/', (req, res) => {
     Tickets.findTickets()

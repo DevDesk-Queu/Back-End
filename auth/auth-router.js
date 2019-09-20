@@ -71,7 +71,7 @@ function makeAToken(user) {
     const payload = {
         sub: user.id,
         email: user.email,
-        fullName: user.name,
+        fullName: user.fullName,
         role: user.role
     }
     const options = {

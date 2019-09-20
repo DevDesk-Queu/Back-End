@@ -1,6 +1,7 @@
 const express = require('express')
 const helmet = require('helmet')
 const cors = require('cors')
+const morgan = require('morgan')
 require('dotenv').config()
 
 const authRouter = require('../auth/auth-router.js')
@@ -12,6 +13,7 @@ const server = express()
 server.use(express.json())
 server.use(helmet())
 server.use(cors())
+server.use(methodLogger)
 
 server.use('/api/auth', authRouter)
 server.use('/api/users', usersRouter)
@@ -25,4 +27,9 @@ server.get('/', (req, res) => {
     `)
 })
 
+// Logging middleware, logs all methods passed to db
+function methodLogger(req, res, next){
+    console.log(` A ${req.method} Request was made to ${req.url}, it returned a status code of ${res.statusCode}`)
+    next()
+  }
 module.exports = server
