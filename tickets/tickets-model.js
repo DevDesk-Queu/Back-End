@@ -21,7 +21,7 @@ function findTickectsById(id) {
 function findCommentsByTicketId(ticketId) {
     return db('comments as c')
         .join('tickets as t', 'c.ticket_id', 't.id')
-        .select('t.id', 'c.comment', 'c.user_id')
+        .select('c.comment', 'c.user_id')
         .where({ ticket_id: ticketId})
 }
 async function addTicket(ticket) {
@@ -36,6 +36,8 @@ function removeTicket(id) {
         .del()
 }
 
-function updateTicket() {
-    return null
+function updateTicket(id, changes) {
+    return db('tickets')
+        .where({ id })
+        .update(changes)
 }

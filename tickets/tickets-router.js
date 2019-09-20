@@ -1,7 +1,9 @@
 
-const Tickets = require('./tickets-model.js')
-
 const router = require('express').Router()
+const Tickets = require('./tickets-model.js')
+const Comments = require('../comments/comments-model.js')
+
+
 
 router.get('/', (req, res) => {
     Tickets.findTickets()
@@ -42,6 +44,21 @@ router.post('/', requireUserId, (req, res) => {
         })
 })
 
+// adds a comment to the ticket
+router.post('/:id/comments', requireUserId, (req, res) => {
+    const comment = {...req.body, ticket_id: req.params.id}
+    Comments.addComment(comment)
+        .then(comments => {
+            res.status(200).json(comments)
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: 'there was an error adding the comment'
+            })
+        })
+
+})
+
 router.delete('/:id', checkId, (req, res) => {
     Tickets.removeTicket(req.params.id)
         .then(count => {
@@ -57,15 +74,23 @@ router.delete('/:id', checkId, (req, res) => {
         })
 })
 
-function requireUserId(req, res, next) {
-    if (!req.body.user_id) {
-        res.status(500).json({
-            message: 'a user_id is required'
+router.put('/:id', checkId, (req, res) => {
+    Tickets.updateTicket(req.params.id, req.body)
+        .then(ticket => {
+            if(ticket) {
+                res.status(200).json(ticket)
+            } else {
+                res.status(404).json({
+                    message: 'the ticket could not be updated'
+                })
+            }
         })
-    } else {
-        next()
-    }
-}
+        .catch(err => {
+            res.status(500).json({
+                message: 'there was an error updating the ticket'
+            })
+        })
+})
 
 // *-------MIDDLEWARE --------* //
 function checkId(req, res, next) {
@@ -88,4 +113,16 @@ function checkId(req, res, next) {
             })
         })
 }
+
+function requireUserId(req, res, next) {
+    if (!req.body.user_id) {
+        res.status(500).json({
+            message: 'a user_id is required'
+        })
+    } else {
+        next()
+    }
+}
+
+
 module.exports = router
