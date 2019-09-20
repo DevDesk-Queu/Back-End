@@ -74,7 +74,7 @@ router.delete('/:id', checkId, (req, res) => {
         })
 })
 
-router.put('/:id', checkId, (req, res) => {
+router.put('/:id', [checkId, requiredBody], (req, res) => {
     Tickets.updateTicket(req.params.id, req.body)
         .then(ticket => {
             if(ticket) {
@@ -124,5 +124,12 @@ function requireUserId(req, res, next) {
     }
 }
 
+function requiredBody(req, res, next) {
+    if(!req.body) {
+        res.status(500).json({
+            message: 'IDK what you are trying to change'
+        })
+    }
+}
 
 module.exports = router

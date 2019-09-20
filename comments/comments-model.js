@@ -24,10 +24,14 @@ async function addComment(comment) {
     return findCommentsById(id)
 }
 
-function removeComment() {
-    return null
+function removeComment(id) {
+    return db('comments')
+        .where({ id })
+        .del()
 }
 
-function updateComment() {
-    return null
+function updateComment(id, changes) {
+    return db('comments')
+        .where({ id })
+        .update(changes)
 }
