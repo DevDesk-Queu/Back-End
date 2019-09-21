@@ -49,7 +49,7 @@ router.post('/:id/comments', requireUserId, (req, res) => {
     const comment = {...req.body, ticket_id: req.params.id}
     Comments.addComment(comment)
         .then(comments => {
-            res.status(200).json(comments)
+            res.status(201).json(comments)
         })
         .catch(err => {
             res.status(500).json({

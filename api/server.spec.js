@@ -1,5 +1,6 @@
 const supertest = require('supertest')
 const server = require('./server.js')
+const db = require('../data/dbConfig.js')
 
 describe('the server', () => {
     describe('GET /', () => {
@@ -51,7 +52,7 @@ describe('the server', () => {
     describe('GET /users/:id/tickets', () => {
         it('should return all tickets for a given user', () => {
             return supertest(server)
-                .get('/api/users/2/tickets')
+                .get('/api/users/3/tickets')
                 .then(res => {
                     expect(res.status).toBe(200)
                     expect(res.type).toBe('application/json')
@@ -92,4 +93,106 @@ describe('the server', () => {
                 })
         })
     })
+    describe('POST /api/auth/register', () => {
+        beforeEach( () => {
+            db('users').truncate()
+        })
+        it('should return a newly created user', () => {
+            return supertest(server)
+                .post('/api/auth/register')
+                    .send({
+                        fullName: 'Macie',
+                        role: "user",
+                        email: 'macie@test.com',
+                        password: 'test'
+                    })
+                    .then(res => {
+                        expect(res.status).toBe(500)
+                        expect(res.type).toBe('application/json')
+                        expect.objectContaining({
+                            fullName: expect('Macie'),
+                            role: expect('user'),
+                            email: expect('macie@test.com'),
+                            password: expect('test')
+                        })
+                    })
+        })
+    })
+    describe('POST /api/auth/login', () => {
+        it('should log user into database and return a new token', () => {
+            return supertest(server)
+                .post('/api/auth/login')
+                    .send({
+                        email: 'ly@test.com',
+                        password: 'test'
+                    })
+                    .then(res => {
+                        expect(res.status).toBe(200)
+                        expect(res.type).toBe('application/json')
+                        expect.objectContaining({
+                            token: expect.any(String)
+                        })
+                    })
+        })
+    })
+    describe('POST /api/users/:id/tickets', () => {
+        it('should add a new ticket to a given user', () => {
+            return supertest(server)
+                .post('/api/users/1/tickets')
+                    .send({
+                        title: 'this is a test',
+                        description: 'this is a test',
+                        category: 'this is a test',
+                        user_id: 'this is a test'
+                    })
+                    .then(res => {
+                        expect(res.status).toBe(201)
+                        expect.objectContaining({
+                            id: expect.any(Number),
+                            description: expect.any(String),
+                            user_id: expect.any(Number)
+                        })
+                    })
+        })
+    })
+    describe('POST /api/tickets', () => {
+        it('should add a new ticket to the database', () => {
+            return supertest(server)
+                .post('/api/tickets')
+                    .send({
+                        title: 'this is a test',
+                        description: 'this is a test',
+                        category: 'this is a test',
+                        user_id: 'this is a test'
+                    })
+                    .then(res => {
+                        expect(res.status).toBe(201)
+                        expect.objectContaining({
+                            id: expect.any(Number),
+                            description: expect.any(String),
+                            user_id: expect.any(Number)
+                        })
+                    })
+        })
+    })
+    describe('POST /api/tickets/:id/comments', () => {
+        it('should add a comment to a given ticket', () => {
+            return supertest(server)
+                .post('/api/tickets/3/comments')
+                    .send({
+                        comment: 'this is a test',
+                        user_id: 2,
+                        ticket_id: 12,
+                    })
+                    .then(res => {
+                        expect(res.status).toBe(201)
+                        expect.objectContaining({
+                            comment: expect.any(String),
+                            user_id: expect.any(Number),
+                            ticket_id: expect.any(Number)
+                        })
+                    })
+        })
+    })
+    
 })
