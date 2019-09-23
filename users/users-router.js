@@ -3,8 +3,9 @@
 const router = require('express').Router()
 const Users = require('./users-model.js')
 const Tickets = require('../tickets/tickets-model.js')
+const restriction = require('../auth/restriction-mw.js')
 
-router.get('/', (req, res) => {
+router.get('/', restriction, (req, res) => {
     Users.find()
         .then(users => {
             res.status(200).json(users)
@@ -15,7 +16,7 @@ router.get('/', (req, res) => {
         })
 })
 
-router.get('/:id', checkId, (req, res) => {
+router.get('/:id', [checkId, restriction], (req, res) => {
     res.status(200).json(req.user)
 })
 
@@ -40,7 +41,7 @@ router.delete('/:id', checkId, (req, res) => {
         })
 })
 
-router.put('/:id', checkId, (req, res) => {
+router.put('/:id', [checkId, restriction], (req, res) => {
     Users.update(req.params.id, req.body)
         .then(user => {
             if(user) {
@@ -59,7 +60,7 @@ router.put('/:id', checkId, (req, res) => {
 })
 
 // endpoint to retrieve tickets based on user id
-router.get('/:id/tickets', checkId, (req, res, next) => {
+router.get('/:id/tickets', [checkId, restriction], (req, res, next) => {
     Users.findTicketsByUser(req.params.id)
         .then(tickets => {
             res.status(200).json(tickets)
@@ -72,7 +73,7 @@ router.get('/:id/tickets', checkId, (req, res, next) => {
 })
 
 // endpoint to add new ticket to a user
-router.post('/:id/tickets', (req, res) => {
+router.post('/:id/tickets', restriction, (req, res) => {
     const ticketInfo = {...req.body, user_id: req.params.id}
     Tickets.addTicket(ticketInfo)
         .then(ticket => {

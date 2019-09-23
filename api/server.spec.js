@@ -1,6 +1,7 @@
 const supertest = require('supertest')
 const server = require('./server.js')
 const db = require('../data/dbConfig.js')
+require('jest-chain')
 
 describe('the server', () => {
     describe('GET /', () => {
@@ -194,5 +195,20 @@ describe('the server', () => {
                     })
         })
     })
-    
+    describe('PUT /api/users/:id', () => {
+        xit('should update a given user', () => {
+            return supertest(server)
+                .put('/api/users/1')
+                    .send({
+                        fullName: 'Devilman Crybaby',
+                        role: 'user'
+                    })
+                    .then(res => {
+                        expect(res.status).toBe(200)
+                        expect.objectContaining({
+                            count: expect.any(Number).toBeGreaterThanOrEqual(1),
+                        })
+                    })
+        })
+    })
 })
