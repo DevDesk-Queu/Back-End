@@ -5,7 +5,7 @@ const Comments = require('../comments/comments-model.js')
 
 const restrction = require('../auth/restriction-mw.js')
 
-router.get('/', restrction, (req, res) => {
+router.get('/', (req, res) => {
     Tickets.findTickets()
         .then(tickets => {
             res.status(200).json(tickets)
@@ -17,7 +17,7 @@ router.get('/', restrction, (req, res) => {
         })
 })
 
-router.get('/:id/comments', [checkId, restrction], (req, res) => {
+router.get('/:id/comments', [checkId], (req, res) => {
     Tickets.findCommentsByTicketId(req.params.id)
         .then(comments => {
             res.status(200).json(comments)
@@ -30,7 +30,7 @@ router.get('/:id/comments', [checkId, restrction], (req, res) => {
         })
 })
 
-router.post('/', [requireUserId, restrction], (req, res) => {
+router.post('/', [requireUserId], (req, res) => {
     const ticketInfo = {...req.body}
     Tickets.addTicket(ticketInfo)
         .then(ticket => {
@@ -45,7 +45,7 @@ router.post('/', [requireUserId, restrction], (req, res) => {
 })
 
 // adds a comment to the ticket
-router.post('/:id/comments', [requireUserId, restrction], (req, res) => {
+router.post('/:id/comments', [requireUserId], (req, res) => {
     const comment = {...req.body, ticket_id: req.params.id}
     Comments.addComment(comment)
         .then(comments => {
@@ -59,7 +59,7 @@ router.post('/:id/comments', [requireUserId, restrction], (req, res) => {
 
 })
 
-router.delete('/:id', [checkId, restrction], (req, res) => {
+router.delete('/:id', [checkId], (req, res) => {
     Tickets.removeTicket(req.params.id)
         .then(count => {
             if(count > 0) {
@@ -74,7 +74,7 @@ router.delete('/:id', [checkId, restrction], (req, res) => {
         })
 })
 
-router.put('/:id', [checkId, requiredBody, restrction], (req, res) => {
+router.put('/:id', [checkId, requiredBody], (req, res) => {
     Tickets.updateTicket(req.params.id, req.body)
         .then(ticket => {
             if(ticket) {

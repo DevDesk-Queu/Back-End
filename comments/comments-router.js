@@ -3,7 +3,7 @@ const Comments = require('./comments-model.js')
 const restriction = require('../auth/restriction-mw.js')
 const router = require('express').Router()
 
-router.get('/', restriction, (req, res) => {
+router.get('/', (req, res) => {
     Comments.findComments()
         .then(comments => {
             res.status(200).json(comments)
@@ -15,7 +15,7 @@ router.get('/', restriction, (req, res) => {
         })
 })
 
-router.delete('/:id', restriction, (req, res) => {
+router.delete('/:id', (req, res) => {
     Comments.removeComment(req.params.id)
         .then(count => {
             if(count > 0) {
@@ -30,7 +30,7 @@ router.delete('/:id', restriction, (req, res) => {
         })
 })
 
-router.put('/:id', [requiredBody, restriction], (req, res) => {
+router.put('/:id', [requiredBody], (req, res) => {
     Comments.updateComment(req.params.id, req.body)
         .then(comment => {
             if(comment) {

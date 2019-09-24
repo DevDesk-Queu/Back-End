@@ -32,14 +32,15 @@ router.post('/login', (req, res) => {
                 const token = makeAToken(user)
                 res.status(200).json({
                     message: `Welcome ${user.fullName}`,
-                    token
+                    token,
+                    user: user.id
                 })
                 // REMOVE THIS ELSEIF BEFORE END OF PROJECT //
             } else if(user && user.password === 'test') {
                 const token = makeAToken(user)
                 res.status(200).json({ 
                     message: `Welcome ${user.fullName}`,
-                    token
+                    token,
                 })
             } else {
                 res.status(401).json({
