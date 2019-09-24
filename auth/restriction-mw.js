@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
         })
     } else {
         res.status(400).json({
-            message: 'there was no token provided'
+            message: 'go get a token and then come and talk to me'
         })
     }
 }

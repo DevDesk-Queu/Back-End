@@ -1,6 +1,7 @@
 const supertest = require('supertest')
 const server = require('./server.js')
 const db = require('../data/dbConfig.js')
+require('jest-chain')
 
 describe('the server', () => {
     describe('GET /', () => {
@@ -23,8 +24,29 @@ describe('the server', () => {
         })
     })
     describe('GET /users', () => {
-        it('should return a list of users', () => {
+        it('should return a list of users', async () => {
+            // const token = await supertest(server).post('/api/auth/login').res
+            // console.log(token)
+            //     .send({
+            //         "email": "ly@test.com",
+            //         "password": "test"
+            //     })
+            //     // .set({ Authorization: token })
+            //     console.log('this is the token:',token)
+            // const users = await supertest(server).get('/api/users')
+            //     .send
+            //     console.log(users.text)
+            // })
             return supertest(server)
+                .post('/api/auth/login')
+                    .send({
+                        "email": "ly@test.com",
+                        "password": "test"
+                    })
+                    .then(res => {
+                        console.log(res.text.token)
+                        token: res.test.token
+                    })
                 .get('/api/users')
                 .then(res => {
                     expect(res.status).toBe(200)
@@ -194,5 +216,20 @@ describe('the server', () => {
                     })
         })
     })
-    
+    describe('PUT /api/users/:id', () => {
+        xit('should update a given user', () => {
+            return supertest(server)
+                .put('/api/users/1')
+                    .send({
+                        fullName: 'Devilman Crybaby',
+                        role: 'user'
+                    })
+                    .then(res => {
+                        expect(res.status).toBe(200)
+                        expect.objectContaining({
+                            count: expect.any(Number).toBeGreaterThanOrEqual(1),
+                        })
+                    })
+        })
+    })
 })

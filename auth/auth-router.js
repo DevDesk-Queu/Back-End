@@ -30,16 +30,18 @@ router.post('/login', (req, res) => {
         .then(user => {
             if(user && bcrypt.compareSync(password, user.password)) {
                 const token = makeAToken(user)
+                delete user.password
                 res.status(200).json({
                     message: `Welcome ${user.fullName}`,
-                    token
+                    token,
+                    user: user
                 })
                 // REMOVE THIS ELSEIF BEFORE END OF PROJECT //
             } else if(user && user.password === 'test') {
                 const token = makeAToken(user)
                 res.status(200).json({ 
                     message: `Welcome ${user.fullName}`,
-                    token
+                    token,
                 })
             } else {
                 res.status(401).json({

@@ -1,6 +1,6 @@
 
 const Comments = require('./comments-model.js')
-
+const restriction = require('../auth/restriction-mw.js')
 const router = require('express').Router()
 
 router.get('/', (req, res) => {
