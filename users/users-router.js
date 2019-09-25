@@ -88,6 +88,9 @@ router.post('/:id/tickets', (req, res) => {
 })
 
 // *------- MIDDLEWARE FUNCTIONS ------------* //
+
+// Verifies an id exists before attempting to do anything with the id
+// no id? no access
 function checkId(req, res, next) {
     const { id } = req.params
     Users.findById(id)

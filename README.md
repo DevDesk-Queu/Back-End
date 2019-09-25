@@ -26,7 +26,6 @@ WEB API FOR THE DEVDESK-QUEU WEB APPLICATION:
             - GET /API/TICKETS - Retrieves a list of all current tickets in the database
             - GET /API/TICKETS/:ID/COMMENTS - Retrieves a list of all current comments assigned to a ticket
             - GET /API/COMMENTS - Retrieves a list of all current comments in the database
-            - GET /API/LOGOUT - Removes current token and logs user out
 
         ## POST REQUESTS
             - POST /API/AUTH/REGISTER - Adds a new user to the database

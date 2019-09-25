@@ -40,15 +40,6 @@ router.post('/login', (req, res) => {
                     token,
                     user: user
                 })
-                // REMOVE THIS ELSEIF BEFORE END OF PROJECT //
-            // } else if(user && user.password === 'test') {
-            //     const token = makeAToken(user)
-            //     console.log(user)
-            //     res.status(200).json({ 
-            //         message: `Welcome ${user.fullName}`,
-            //         token,
-            //         user: user
-            //     })
             } else {
                 res.status(401).json({
                     message: 'invalid credentials'
@@ -61,20 +52,9 @@ router.post('/login', (req, res) => {
         })
 })
 
-router.get('/logout', (req, res) => {
-    if (req.session) {
-        req.session.destroy(err => {
-            if(err) {
-                res.json({
-                    message: 'sorry you are trapped here forever'
-                })
-            } else {
-                res.end()
-            }
-        })
-    }
-})
-
+// Function creates a token given to client upon succesfully adding a user, or loggin in
+// token used for access to other functions with the database, 
+// ie post request to add tickets
 function makeAToken(user) {
     const payload = {
         sub: user.id,
