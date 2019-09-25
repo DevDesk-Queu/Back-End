@@ -1,4 +1,4 @@
-// Update with your config settings.
+
 const prodDbConnection = process.env.DATABASE_URL
 
 module.exports = {
