@@ -11,6 +11,7 @@ router.post('/register', (req, res) => {
 
     Users.add(user)
         .then(saved => {
+            console.log('*******saved********,', saved)
             const token = makeAToken(saved)
             res.status(201).json({
                 user: saved,
