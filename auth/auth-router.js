@@ -34,18 +34,21 @@ router.post('/login', (req, res) => {
             if(user && bcrypt.compareSync(password, user.password)) {
                 const token = makeAToken(user)
                 delete user.password
+                console.log(user)
                 res.status(200).json({
                     message: `Welcome ${user.fullName}`,
                     token,
                     user: user
                 })
                 // REMOVE THIS ELSEIF BEFORE END OF PROJECT //
-            } else if(user && user.password === 'test') {
-                const token = makeAToken(user)
-                res.status(200).json({ 
-                    message: `Welcome ${user.fullName}`,
-                    token
-                })
+            // } else if(user && user.password === 'test') {
+            //     const token = makeAToken(user)
+            //     console.log(user)
+            //     res.status(200).json({ 
+            //         message: `Welcome ${user.fullName}`,
+            //         token,
+            //         user: user
+            //     })
             } else {
                 res.status(401).json({
                     message: 'invalid credentials'
