@@ -37,6 +37,11 @@ exports.up = function(knex) {
             .references('id')
             .inTable('users')
         tickets
+            .integer('helper_id')
+            .unsigned()
+            .references('id')
+            .inTable('users')
+        tickets
             .timestamps(true, true)
         // user id will be a foreign key
     })
