@@ -10,7 +10,8 @@ module.exports = {
 }
 
 function findTickets() {
-    return db('tickets').select('id', 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at', 'helper_id')
+    // return db('tickets').select('id', 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at', 'helper_id')
+    return db('tickets').select('*')
 }
 
 function findTickectsById(id) {
