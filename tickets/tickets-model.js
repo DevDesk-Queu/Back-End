@@ -6,7 +6,8 @@ module.exports = {
     findCommentsByTicketId,
     addTicket,
     removeTicket,
-    updateTicket
+    updateTicket,
+    findTicketsByHelperId
 }
 
 function findTickets() {
@@ -18,6 +19,10 @@ function findTickectsById(id) {
     return db('tickets').select('id', 'description', 'user_id', 'helper_id')
         .where({ id })
         .first()
+}
+function findTicketsByHelperId(id) {
+    return db('tickets').select('id', 'description', 'user_id')
+        .where({ helper_id: id })
 }
 function findCommentsByTicketId(ticketId) {
     return db('comments as c')
