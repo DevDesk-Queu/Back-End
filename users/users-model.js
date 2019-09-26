@@ -26,9 +26,17 @@ function findById(id) {
 }
 
 async function add(user) {
-    const [id] = await db('users').insert(user)
+    return db('users').insert(user, '*')
+    
+    // .then(ids => {
+    //     console.log('*************** id:',ids)
+    //     return db('users').where({ id: ids[0]}).first();
 
-    return findById(id)
+
+    // })
+    // const [id] = await db('users').insert(user)
+
+    // return findById(id)
 }
 
 function remove(id) {

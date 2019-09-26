@@ -49,6 +49,10 @@ router.put('/:id', [requiredBody], (req, res) => {
 })
 
 
+// *--------------- MIDDLEWARE ----------------*
+
+// Middleware that requires a body to be sent with the put request to update a comment
+// sends a message if the body is empty
 function requiredBody(req, res, next) {
     if(!req.body) {
         res.status(500).json({

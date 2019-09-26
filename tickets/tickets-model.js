@@ -10,11 +10,12 @@ module.exports = {
 }
 
 function findTickets() {
-    return db('tickets').select('id', 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at')
+    // return db('tickets').select('id', 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at', 'helper_id')
+    return db('tickets').select('*')
 }
 
 function findTickectsById(id) {
-    return db('tickets').select('id', 'description', 'user_id')
+    return db('tickets').select('id', 'description', 'user_id', 'helper_id')
         .where({ id })
         .first()
 }

@@ -93,6 +93,9 @@ router.put('/:id', [checkId, requiredBody], (req, res) => {
 })
 
 // *-------MIDDLEWARE --------* //
+
+// Verifies an id exists before attempting to do anything with the id
+// no id? no access
 function checkId(req, res, next) {
     const { id } = req.params
     Tickets.findTickectsById(id)
@@ -114,6 +117,8 @@ function checkId(req, res, next) {
         })
 }
 
+// some functions require a "user_id"
+// function verifies this exists and is there 
 function requireUserId(req, res, next) {
     if (!req.body.user_id) {
         res.status(500).json({
@@ -124,6 +129,8 @@ function requireUserId(req, res, next) {
     }
 }
 
+// Middleware that requires a body to be sent with the put request to update ticket
+// sends a message if the body is empty
 function requiredBody(req, res, next) {
     if(!req.body) {
         res.status(500).json({

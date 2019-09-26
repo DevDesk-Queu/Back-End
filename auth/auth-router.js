@@ -11,6 +11,7 @@ router.post('/register', (req, res) => {
 
     Users.add(user)
         .then(saved => {
+            console.log('*******saved********,', saved)
             const token = makeAToken(saved)
             res.status(201).json({
                 user: saved,
@@ -19,7 +20,9 @@ router.post('/register', (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(500).json(err)
+            res.status(500).json({
+                message: 'is this working?'
+            })
         })
 })
 
@@ -31,17 +34,11 @@ router.post('/login', (req, res) => {
             if(user && bcrypt.compareSync(password, user.password)) {
                 const token = makeAToken(user)
                 delete user.password
+                console.log(user)
                 res.status(200).json({
                     message: `Welcome ${user.fullName}`,
                     token,
                     user: user
-                })
-                // REMOVE THIS ELSEIF BEFORE END OF PROJECT //
-            } else if(user && user.password === 'test') {
-                const token = makeAToken(user)
-                res.status(200).json({ 
-                    message: `Welcome ${user.fullName}`,
-                    token,
                 })
             } else {
                 res.status(401).json({
@@ -55,20 +52,9 @@ router.post('/login', (req, res) => {
         })
 })
 
-router.get('/logout', (req, res) => {
-    if (req.session) {
-        req.session.destroy(err => {
-            if(err) {
-                res.json({
-                    message: 'sorry you are trapped here forever'
-                })
-            } else {
-                res.end()
-            }
-        })
-    }
-})
-
+// Function creates a token given to client upon succesfully adding a user, or loggin in
+// token used for access to other functions with the database, 
+// ie post request to add tickets
 function makeAToken(user) {
     const payload = {
         sub: user.id,
