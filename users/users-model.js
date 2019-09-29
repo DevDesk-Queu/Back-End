@@ -39,7 +39,7 @@ function remove(id) {
 function update(id, changes) {
     return db('users')
         .where({ id })
-        .update(changes)
+        .update(changes, '*')
 }
 
 function findTicketsByUser(userId) {

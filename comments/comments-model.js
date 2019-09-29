@@ -19,9 +19,10 @@ function findCommentsById(id) {
 }
 
 async function addComment(comment) {
-    const [id] = await db('comments').insert(comment)
+    return db('comments').insert(comment, '*')
+    // const [id] = await db('comments').insert(comment)
 
-    return findCommentsById(id)
+    // return findCommentsById(id)
 }
 
 function removeComment(id) {
