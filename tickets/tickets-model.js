@@ -38,7 +38,7 @@ async function addTicket(ticket) {
 
 function removeTicket(id) {
     return db('tickets')
-        .where({ id })
+        .where({ id: id })
         .del()
 }
 
