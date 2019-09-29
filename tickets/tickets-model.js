@@ -45,5 +45,5 @@ function removeTicket(id) {
 function updateTicket(id, changes) {
     return db('tickets')
         .where({ id })
-        .update(changes)
+        .update(changes, '*')
 }
