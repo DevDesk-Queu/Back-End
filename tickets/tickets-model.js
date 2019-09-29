@@ -11,7 +11,6 @@ module.exports = {
 }
 
 function findTickets() {
-    // return db('tickets').select('id', 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at', 'helper_id')
     return db('tickets').select('*')
 }
 
@@ -31,9 +30,10 @@ function findCommentsByTicketId(ticketId) {
         .where({ ticket_id: ticketId})
 }
 async function addTicket(ticket) {
-    const [id] = await db('tickets').insert(ticket)
+    return db('tickets').insert(ticket, '*')
+    // const [id] = await db('tickets').insert(ticket)
 
-    return findTickectsById(id)
+    // return findTickectsById(id)
 }
 
 function removeTicket(id) {
