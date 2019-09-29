@@ -145,8 +145,10 @@ function requireUserId(req, res, next) {
 function requiredBody(req, res, next) {
     if(!req.body) {
         res.status(500).json({
-            message: 'IDK what you are trying to change'
+            message: 'IDK what you are trying to change',
         })
+    } else {
+        next()
     }
 }
 
