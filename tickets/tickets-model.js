@@ -6,11 +6,11 @@ module.exports = {
     findCommentsByTicketId,
     addTicket,
     removeTicket,
-    updateTicket
+    updateTicket,
+    findTicketsByHelperId
 }
 
 function findTickets() {
-    // return db('tickets').select('id', 'title', 'description', 'category', 'user_id', 'created_at', 'updated_at', 'helper_id')
     return db('tickets').select('*')
 }
 
@@ -19,6 +19,10 @@ function findTickectsById(id) {
         .where({ id })
         .first()
 }
+function findTicketsByHelperId(id) {
+    return db('tickets').select('id', 'description', 'user_id')
+        .where({ helper_id: id })
+}
 function findCommentsByTicketId(ticketId) {
     return db('comments as c')
         .join('tickets as t', 'c.ticket_id', 't.id')
@@ -26,19 +30,20 @@ function findCommentsByTicketId(ticketId) {
         .where({ ticket_id: ticketId})
 }
 async function addTicket(ticket) {
-    const [id] = await db('tickets').insert(ticket)
+    return db('tickets').insert(ticket, '*')
+    // const [id] = await db('tickets').insert(ticket)
 
-    return findTickectsById(id)
+    // return findTickectsById(id)
 }
 
 function removeTicket(id) {
     return db('tickets')
-        .where({ id })
+        .where({ id: id })
         .del()
 }
 
 function updateTicket(id, changes) {
     return db('tickets')
         .where({ id })
-        .update(changes)
+        .update(changes, '*')
 }

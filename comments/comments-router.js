@@ -58,6 +58,8 @@ function requiredBody(req, res, next) {
         res.status(500).json({
             message: 'IDK what you are trying to change'
         })
+    } else {
+        next()
     }
 }
 module.exports = router

@@ -3,7 +3,7 @@ const router = require('express').Router()
 const Tickets = require('./tickets-model.js')
 const Comments = require('../comments/comments-model.js')
 
-const restrction = require('../auth/restriction-mw.js')
+const restriction = require('../auth/restriction-mw.js')
 
 router.get('/', (req, res) => {
     Tickets.findTickets()
@@ -16,7 +16,18 @@ router.get('/', (req, res) => {
             })
         })
 })
-
+router.get('/:id/tickets', (req, res) => {
+    Tickets.findTicketsByHelperId(req.params.id)
+        .then(tickets => {
+            res.status(200).json(tickets)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                message: 'there was an error retrieving the tickets assigned to this helper'
+            })
+        })
+})
 router.get('/:id/comments', [checkId], (req, res) => {
     Tickets.findCommentsByTicketId(req.params.id)
         .then(comments => {
@@ -134,8 +145,10 @@ function requireUserId(req, res, next) {
 function requiredBody(req, res, next) {
     if(!req.body) {
         res.status(500).json({
-            message: 'IDK what you are trying to change'
+            message: 'IDK what you are trying to change',
         })
+    } else {
+        next()
     }
 }
 

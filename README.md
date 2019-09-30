@@ -6,12 +6,12 @@ WEB API FOR THE DEVDESK-QUEU WEB APPLICATION:
 ### https://devdeskbackend.herokuapp.com/ ###
 
 ## DESCRIPTION
-    Api configured to consume data from front end devdesk application
+    Api configuration for DEVDESK, full CRUD operations, migrated to postgres
 
 ## MAIN DATA TYPES
     - Users
         - requires: fullName, email, password, role
-        - can have 1 : Many relationship
+        - can have multiple tickets, be assigned to multiple tickets, and leave comments on tickets
     - Tickets
         - requires: title, description, category, user_id
     - Comments
@@ -26,6 +26,7 @@ WEB API FOR THE DEVDESK-QUEU WEB APPLICATION:
             - GET /API/TICKETS - Retrieves a list of all current tickets in the database
             - GET /API/TICKETS/:ID/COMMENTS - Retrieves a list of all current comments assigned to a ticket
             - GET /API/COMMENTS - Retrieves a list of all current comments in the database
+            - GET /API/TICKETS/:ID/TICKETS - Retrieves a list of tickets assigned to a helper
 
         ## POST REQUESTS
             - POST /API/AUTH/REGISTER - Adds a new user to the database
